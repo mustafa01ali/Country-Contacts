@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, HomeActivity!</string>
+    <string name="app_name">CountryContacts</string>
+    <color name="background">#96C120</color>
+    <string-array name="countries">
+        <item>India</item>
+        <item>China</item>
+        <item>Japan</item>
+        <item>Australia</item>
+        <item>Finland</item>
+    </string-array>
+    <string-array name="codes">
+        <item>+91</item>
+        <item>+86</item>
+        <item>+81</item>
+        <item>+61</item>
+        <item>+358</item>
+    </string-array>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>
