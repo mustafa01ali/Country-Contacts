@@ -26,48 +26,49 @@ import java.util.ArrayList;
 
 /**
  * @author mustafa.ali
- *
  */
-public class Contact implements Parcelable{
+public class Contact implements Parcelable {
 
     private String name;
-    private ArrayList<String> phoneNumbers; 
+    private ArrayList<String> phoneNumbers;
+    private String id;
 
     /**
      * Default Constructor
      */
-    public Contact(){
+    public Contact() {
         name = "";
         phoneNumbers = new ArrayList<String>();
     }
-    
+
     /**
      * Constructor
-     * @param name  Contact name
+     * 
+     * @param name Contact name
      */
-    public Contact(String name){
+    public Contact(String name) {
         this.setName(name);
         phoneNumbers = new ArrayList<String>();
     }
 
     /**
-     *
-     * Constructor to use when re-constructing object
-     * from a parcel
-     *
+     * Constructor to use when re-constructing object from a parcel
+     * 
      * @param in a parcel from which to read this object
      */
     public Contact(Parcel in) {
         this();
         name = in.readString();
+        id = in.readString();
         in.readStringList(phoneNumbers);
     }
 
     /**
      * Adds a phone number to the contact
-     * @param number    phone number
+     * 
+     * @param number phone number
      */
-    public void addPhoneNumber(String number){
+    public void addPhoneNumber(String number) {
         this.phoneNumbers.add(number);
     }
 
@@ -85,57 +86,76 @@ public class Contact implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(id);
         dest.writeStringList(phoneNumbers);
     }
 
     /**
      * Setter for name
+     * 
      * @param name Contact name
      */
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * Getter for name field
+     * 
      * @return Contact name
      */
-    public String getName(){
+    public String getName() {
         return this.name;
     }
-    
+
     /**
      * Getter for phone numbers
+     * 
      * @return Contact's phone numbers
      */
-    public ArrayList<String> getPhoneNumbers(){
+    public ArrayList<String> getPhoneNumbers() {
         return this.phoneNumbers;
     }
-    
+
     /**
      * Checks if the contact has any phone numbers
+     * 
      * @return true if the contacts has any phone numbers, false otherwise
      */
-    public boolean hasPhoneNumbers(){
+    public boolean hasPhoneNumbers() {
         if (phoneNumbers.size() > 0) {
             return true;
         }
         return false;
     }
-    
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      * CREATOR to re-instantiate the object from the bundle
      */
     public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {
 
         public Contact createFromParcel(Parcel source) {
-           return new Contact(source);
+            return new Contact(source);
         }
 
         public Contact[] newArray(int size) {
-           return new Contact[size];
+            return new Contact[size];
         }
 
-     };
+    };
 
 }

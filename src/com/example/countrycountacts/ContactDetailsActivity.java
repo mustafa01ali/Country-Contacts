@@ -23,46 +23,53 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import java.util.ArrayList;
 
 /**
  * @author mustafa.ali
- *
  */
 public class ContactDetailsActivity extends Activity {
-    
+
+    private Contact mContact;
     private ArrayList<String> mPhoneNumbers;
-    
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_details);
-        
+
         displayDetails();
     }
-    
-    private void displayDetails(){
+
+    /**
+     * Displays the contact's details
+     */
+    private void displayDetails() {
         Bundle b = getIntent().getExtras();
-        Contact contact =
-            b.getParcelable("contact");
-     
+        mContact =
+                b.getParcelable("contact");
+
         TextView nameTextView = (TextView) findViewById(R.id.name);
-        nameTextView.setText(contact.getName());
-        
+        nameTextView.setText(mContact.getName());
+
         ListView lv = (ListView) findViewById(R.id.numbers_list);
-        mPhoneNumbers = contact.getPhoneNumbers();
-        
-        lv.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, mPhoneNumbers.toArray()));
-        //lv.setAdapter(new ArrayAdapter<Object>(this, R.layout.phone_field, R.id.number, phoneNumbers.toArray()));
-        
+        mPhoneNumbers = mContact.getPhoneNumbers();
+
+        lv.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1,
+                mPhoneNumbers.toArray()));
+        // lv.setAdapter(new ArrayAdapter<Object>(this, R.layout.phone_field, R.id.number, phoneNumbers.toArray()));
+
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
@@ -70,5 +77,28 @@ public class ContactDetailsActivity extends Activity {
                         Uri.parse("tel:" + mPhoneNumbers.get(position))));
             }
         });
+    }
+
+    /**
+     * Creates the options menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, Menu.NONE, 0, "Edit").setIcon(android.R.drawable.ic_menu_edit);
+        return true;
+    }
+
+    /**
+     * Handles the options menu clicks
+     */
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (item.getTitle().equals("Edit")) {
+            Intent i = new Intent(Intent.ACTION_EDIT);
+            i.setData(Uri.parse(ContactsContract.Contacts.CONTENT_LOOKUP_URI + "/"
+                    + mContact.getId()));
+            startActivity(i);
+        }
+        return true;
     }
 }
